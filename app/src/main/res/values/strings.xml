@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name" translatable="false">Kurwix 2000</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_submit">Send</string>
+    <string name="start_server">Start server</string>
+    <string name="start_client">Connect</string>
+    <string name="enter_ip">Enter servers IP address</string>
+    <string name="connect_desc">Connect to an existing server:</string>
+    <string name="ipErrMsg">Invalid IP Address</string>
+    <string name="server_desc">Start a new server:</string>
+    <string name="client_running">Client is running</string>
+    <string name="client_starting">Client is starting...</string>
+</resources>
