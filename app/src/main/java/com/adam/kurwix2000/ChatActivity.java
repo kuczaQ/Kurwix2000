@@ -67,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
 
     ArrayList<String> text = new ArrayList<String>();
     InetAddress ip;
-    TextView console;
+    static TextView console;
     ChatWorkerThread worker;
     Socket socket;
 
@@ -107,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         try {
-            socket = new ConnectTask().execute(ip).get();
+            new ConnectTask().execute(ip);
         } catch (Exception e) {
             printStackTrace(e);
         }
@@ -143,7 +143,7 @@ public class ChatActivity extends AppCompatActivity {
 //                    } catch (Exception e1){}
 //                    socket = null;
 //                }
-
+                printStackTrace(e);
                 return null;
             }
 
@@ -172,11 +172,11 @@ public class ChatActivity extends AppCompatActivity {
         console.setText(console.getText() + o.toString() + "\n");
     }
 
-    public void printToConsole(String s) {
+    public static void printToConsole(String s) {
         console.setText(console.getText() + s + "\n");
     }
 
-    private void printStackTrace(Exception e) {
+    private static void printStackTrace(Exception e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
