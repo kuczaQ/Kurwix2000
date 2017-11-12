@@ -10,52 +10,84 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataInputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ChatActivity extends AppCompatActivity {
-    private class ConnectTask extends AsyncTask<InetAddress, Integer, Socket> {
-        protected Socket doInBackground(InetAddress... inetAddresses) {
-            return ChatActivity.connect(inetAddresses[0]);
-        }
-
-        protected void onPostExecute(Socket result) {
-            //ChatActivity.
-        }
-    }
-
-    class ChatWorkerThread extends Thread {
+    private class ChatWorkerThread extends Thread {
         volatile boolean run = true;
-        ChatActivity parent;
-
-        public ChatWorkerThread(ChatActivity parent) {
-            this.parent = parent;
-        }
 
         @Override
         public void run() {
-            printToConsole("Client is starting...");
+            class PrintServerMsg implements Runnable {
+                final String msg;
+                PrintServerMsg(String msg) { this.msg = msg; }
 
-            try {
-                DataInputStream stream = new DataInputStream(parent.socket.getInputStream());
+                public void run() {
+                    printToConsole(msg);
+                }
+            }
+            class PrintStackTrace implements Runnable {
+                final Exception e;
+                PrintStackTrace(Exception e) { this.e = e; }
+
+                public void run() {
+                    printStackTrace(e);
+                }
+            }
+
+            runOnUiThread(new PrintServerMsg("Client is starting..."));
+
+            try (Socket s = new Socket(ip, PORT)) {
+                DataInputStream stream = new DataInputStream(s.getInputStream());
+
+                runOnUiThread(new PrintServerMsg(null) {
+                    @Override
+                    public void run() {
+                        printToConsole("Client running!");
+                        enableControls();
+                    }
+                });
 
                 String buff = "";
-                do {
-                    //stream.writeUTF(buff);
-                    //stream.flush();
-                    System.out.println(buff);
-                } while (!buff.equals("STOP"));
 
-               // stream.writeUTF(buff);
-                //stream.flush();
-            } catch (Exception e) {
-                printStackTrace(e);
+                while (run) {
+                    buff = stream.readUTF();
+                    runOnUiThread(new PrintServerMsg("Server says: " + buff));
+                }
+
+            s.close();
+
+            } catch(Exception e) {
+                runOnUiThread(new PrintStackTrace(e));
+                runOnUiThread(new PrintServerMsg("Couldn't start the client, " +
+                       "please check your IP address and try again..."));
             }
         }
+//            try {
+//                DataInputStream stream = new DataInputStream(parent.socket.getInputStream());
+//
+//                String buff = "";
+//                do {
+//                    //stream.writeUTF(buff);
+//                    //stream.flush();
+//                    System.out.println(buff);
+//                } while (!buff.equals("STOP"));
+//
+//               // stream.writeUTF(buff);
+//                //stream.flush();
+//            } catch (Exception e) {
+//                printStackTrace(e);
+//            }
+//        }
 
         public void setToStop() {
             run = false;
@@ -106,11 +138,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            new ConnectTask().execute(ip);
-        } catch (Exception e) {
-            printStackTrace(e);
-        }
+        worker = new ChatWorkerThread();
+        worker.start();
+//        try {
+//            new ConnectTask().execute(ip);
+//        } catch (Exception e) {
+//            printStackTrace(e);
+//        }
         //connect();
     }
 
@@ -124,30 +158,14 @@ public class ChatActivity extends AppCompatActivity {
         return socket != null;
     }
 
-    protected static Socket connect(InetAddress ip) {
-        Socket s;
+    protected void enableControls() {
+        findViewById(R.id.msgField).setEnabled(true);
+        findViewById(R.id.sendButton).setEnabled(true);
+    }
 
-            try {
-                s = new Socket(ip, PORT);
-//                findViewById(R.id.msgField).setEnabled(true);
-//                findViewById(R.id.sendButton).setEnabled(true);
-
-//                worker = new ChatWorkerThread(this);
-//                worker.start();
-
-                return s;
-            } catch (Exception e) {
-//                if (socket != null) {
-//                    try {
-//                        socket.close();
-//                    } catch (Exception e1){}
-//                    socket = null;
-//                }
-                printStackTrace(e);
-                return null;
-            }
-
-
+    protected void disableControls() {
+        findViewById(R.id.msgField).setEnabled(false);
+        findViewById(R.id.sendButton).setEnabled(false);
     }
 
     protected void disconnect() {
@@ -172,11 +190,11 @@ public class ChatActivity extends AppCompatActivity {
         console.setText(console.getText() + o.toString() + "\n");
     }
 
-    public static void printToConsole(String s) {
+    public void printToConsole(String s) {
         console.setText(console.getText() + s + "\n");
     }
 
-    private static void printStackTrace(Exception e) {
+    private void printStackTrace(Exception e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);

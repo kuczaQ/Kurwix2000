@@ -11,72 +11,69 @@
         android:id="@+id/clientStart"
         android:layout_width="101dp"
         android:layout_height="41dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:elevation="0dp"
         android:onClick="startClient"
         android:text="@string/start_client"
-        android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/IPAddressEditText"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintTop_toTopOf="@+id/IPAddressEditText"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/IPAddressEditText"
-        android:layout_marginBottom="0dp" />
+        app:layout_constraintStart_toEndOf="@+id/IPAddressEditText"
+        app:layout_constraintTop_toTopOf="@+id/IPAddressEditText" />
 
     <Button
         android:id="@+id/serverStart"
         android:layout_width="182dp"
-        android:layout_height="wrap_content"
-        android:onClick="startServer"
-        android:text="@string/start_server"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:onClick="startServer"
+        android:text="@string/server_desc"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
         android:id="@+id/IPAddressEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/enter_ip"
         android:inputType="textPersonName"
-        android:text="10.0.0.44"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="10.0.0.6"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:text="@string/connect_desc"
+        android:layout_height="22dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/connect_desc"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ipErrorMsg"
         android:layout_width="173dp"
         android:layout_height="24dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/IPAddressEditText" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="100dp"
         android:text="@string/server_desc"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="100dp"
         app:layout_constraintTop_toBottomOf="@+id/ipErrorMsg" />
 
 </android.support.constraint.ConstraintLayout>

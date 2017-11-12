@@ -3,8 +3,9 @@
     <menu app:showAsAction="always" />
     <item
         android:id="@+id/refresh"
-        android:title="refresh"
-        app:showAsAction="always"
+        android:enabled="true"
         android:icon="@android:drawable/stat_notify_sync"
-    />
+        android:title="@string/app_name"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>
