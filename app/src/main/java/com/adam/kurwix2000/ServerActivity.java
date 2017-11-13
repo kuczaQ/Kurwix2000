@@ -108,7 +108,7 @@ public class ServerActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //Intent intent = getIntent();
-        console = (TextView) findViewById(R.id.console);
+        console = (TextView) findViewById(R.id.consoleServer);
 
         try {
             ip = InetAddress.getLocalHost();
@@ -125,7 +125,7 @@ public class ServerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        worker = new ChatActivity.ChatWorkerThread();
+        worker = new ChatWorkerThread();
         worker.start();
 //        try {
 //            new ConnectTask().execute(ip);
@@ -146,13 +146,13 @@ public class ServerActivity extends AppCompatActivity {
     }
 
     protected void enableControls() {
-        findViewById(R.id.msgField).setEnabled(true);
-        findViewById(R.id.sendButton).setEnabled(true);
+        findViewById(R.id.msgFieldServer).setEnabled(true);
+        findViewById(R.id.sendButtonServer).setEnabled(true);
     }
 
     protected void disableControls() {
-        findViewById(R.id.msgField).setEnabled(false);
-        findViewById(R.id.sendButton).setEnabled(false);
+        findViewById(R.id.msgFieldServer).setEnabled(false);
+        findViewById(R.id.sendButtonServer).setEnabled(false);
     }
 
     protected void disconnect() {
@@ -161,8 +161,8 @@ public class ServerActivity extends AppCompatActivity {
                 worker.setToStop();
                 worker.join();
                 socket.close();
-                findViewById(R.id.msgField).setEnabled(false);
-                findViewById(R.id.sendButton).setEnabled(false);
+                findViewById(R.id.msgFieldServer).setEnabled(false);
+                findViewById(R.id.sendButtonServer).setEnabled(false);
             } catch (Exception e) {
                 printStackTrace(e);
             }
