@@ -13,12 +13,11 @@
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="8dp"
-        android:editable="true"
         android:ems="10"
         android:enabled="false"
         android:focusedByDefault="false"
         android:hint="@string/edit_message"
-        android:inputType="textPersonName"
+        android:inputType="textAutoCorrect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendButtonClient"
         app:layout_constraintHorizontal_bias="0.0"
@@ -75,6 +74,4 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
     </ScrollView>
-
-
 </android.support.constraint.ConstraintLayout>

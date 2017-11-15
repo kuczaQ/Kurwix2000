@@ -186,7 +186,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //disconnect();
+        stop();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
     @Override
@@ -215,7 +221,7 @@ public class ChatActivity extends AppCompatActivity {
             restart();
     }
 
-    private void restart() {
+    public void restart() {
         disableControls();
         console.setText("");
         worker.setToStop();
@@ -224,6 +230,9 @@ public class ChatActivity extends AppCompatActivity {
         worker.start();
     }
 
+    public void stop() {
+        worker.setToStop();
+    }
 //    protected boolean connected() {
 //        return socket != null;
 //    }
@@ -253,7 +262,9 @@ public class ChatActivity extends AppCompatActivity {
 //    }
 
     public void sendMessage(View view) {
-        final String msg = ((EditText)(findViewById(R.id.msgFieldClient))).getText().toString();
+        EditText et = findViewById(R.id.msgFieldClient);
+        final String msg = et.getText().toString();
+        et.setText("");
         Thread post = new Thread() {
             @Override
             public void run() {
@@ -270,6 +281,7 @@ public class ChatActivity extends AppCompatActivity {
     public void scrollDown() {
         //Use instead of "scrollView.fullScroll(ScrollView.FOCUS_DOWN);"
         //if shit hits the fans...
+        //
 //        View lastChild = scrollView.getChildAt(scrollView.getChildCount() - 1);
 //        int bottom = lastChild.getBottom() + scrollView.getPaddingBottom();
 //        int sy = scrollView.getScrollY();
